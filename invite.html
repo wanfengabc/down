@@ -59,18 +59,43 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
     <script>
       var target = 'http://www.xxtbx.org.tc:8000/#/webregister/';
-      // var target = 'http://localhost:8080/#/webregister/';
+      var pcTarget = 'http://www.xxtbx.org.tc:7000/#/reg/';
       $(function() {
         target += getQueryVariable('invite');
+        pcTarget += getQueryVariable('invite');
         $('.click-copy')[0].setAttribute('data-clipboard-text', target);
+        if (IsPC()) {
+          window.location.href = pcTarget;
+          return;
+        }
         if (!is_weixn()) {
           window.location.href = target;
+          return;
         }
         var clipboard = new ClipboardJS('.click-copy');
         clipboard.on('success', function(e) {
           e.trigger.innerText = '复制成功';
         });
       });
+      function IsPC() {
+        var userAgentInfo = navigator.userAgent;
+        var Agents = [
+          'Android',
+          'iPhone',
+          'SymbianOS',
+          'Windows Phone',
+          'iPad',
+          'iPod',
+        ];
+        var flag = true;
+        for (var v = 0; v < Agents.length; v++) {
+          if (userAgentInfo.indexOf(Agents[v]) > 0) {
+            flag = false;
+            break;
+          }
+        }
+        return flag;
+      }
       function is_weixn() {
         var ua = navigator.userAgent.toLowerCase();
         if (ua.match(/MicroMessenger/i) == 'micromessenger') {
